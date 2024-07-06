@@ -1,0 +1,17 @@
+body {
+    background-color: #f8f9fa;
+}
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ebdada;
+}
+.navbar {
+    background-color: #eaeaea;
+}
+.footer {
+    background-color: #eaeaea;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}

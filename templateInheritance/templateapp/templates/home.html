@@ -1,0 +1,61 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>welcome to Home page</h1>
+</body>
+</html> -->
+
+{% extends "navbar.html" %}
+{% load static %}
+
+{% block stylesheet %}
+    <link href="{% static "css/home.css" %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}template Home{% endblock title %}
+
+
+
+
+{% block body %} 
+<header class="container my-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 text-center">
+            <h1>Welcome to MyWebsite</h1>
+            <p class="lead">Your one-stop solution for all your needs. Explore our services and offerings.</p>
+            <a href="#" class="btn btn-primary btn-lg">Learn More</a>
+        </div>
+    </div>
+</header>
+
+<section class="container my-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h2>Service One</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu nec metus bibendum gravida.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h2>Service Two</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu nec metus bibendum gravida.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h2>Service Three</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu nec metus bibendum gravida.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock body %}

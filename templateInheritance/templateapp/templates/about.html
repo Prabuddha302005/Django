@@ -1,0 +1,27 @@
+{% extends "navbar.html" %}
+
+{% load static %}
+
+{% block stylesheet %}
+    <link href="{% static "css/about.css" %}" rel="stylesheet">
+{% endblock stylesheet %}
+{% block title %}template About{% endblock title %}
+
+
+{% block body %} 
+<section class="container my-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card p-5">
+                    <h1>About Us</h1>
+                    <p class="lead">We are a team of dedicated professionals committed to delivering top-notch services to our clients.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel arcu nec metus bibendum gravida. Curabitur at ligula sed purus viverra faucibus. Phasellus auctor sem et nulla sodales, at facilisis elit feugiat. Fusce id leo lacinia, luctus ante nec, tempus libero. Maecenas non nunc vehicula, tincidunt quam et, volutpat dui.</p>
+                    <p>Aliquam erat volutpat. Praesent in mollis lacus. Etiam vehicula dapibus orci, non tincidunt sapien volutpat a. Duis sed lectus urna. Curabitur non nibh risus. Morbi fermentum, nisi vel laoreet elementum, nunc urna consectetur lorem, eget semper risus nisl vel velit.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+{% endblock body %}
