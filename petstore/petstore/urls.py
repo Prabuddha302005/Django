@@ -1,5 +1,5 @@
 """
-URL configuration for form_mysql project.
+URL configuration for petstore project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -15,11 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from petapp import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('customer/', include("customer_form.customer_urls")),
-    path('employee/', include("employee_form.employee_urls")),
-    path('product/', include("product_form.product_urls")),
+    path('pets/', views.PetListView.as_view())
 ]
