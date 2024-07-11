@@ -57,9 +57,13 @@ def user_login(request):
          else:
             login(request, user)
             if(user.is_staff==True):
-               return HttpResponse("SELLER DASHBOARD")
+            #   return render(request, "seller/dashboard.html")
+                return redirect("/dashboard")
             else:
              return redirect('/')
 
    return render(request, "user/login.html")
-   
+
+def user_logout(request):
+   logout(request)
+   return redirect("/")
