@@ -26,7 +26,7 @@
                <a href="/cart/dec/{{product.id}}" class="btn btn-danger">-</a>
                <input type="number" value="{{product.quantity}}" class="text-center" disabled>
                <a href="/cart/inc/{{product.id}}" class="btn btn-success">+</a>
-               <a href="" class="btn btn-danger">delete</a>
+               <a href="/delete/{{product.id}}" class="btn btn-danger">delete</a>
             </div>
          </div>
          <hr>
@@ -37,7 +37,7 @@
 
       <!-- total items and price details  -->
       <div class="col-4 border h-50 p-3">
-         <h1 class="bg-warning">Hello, {{user.username|title}}</h1>
+         <h1 class="">Hello, {{user.username|title}}</h1>
          <hr>
          <h2>Total Items : {{total_items}}</h2>
          <h3>Total Price : &#x20b9; {{total_price}}</h3>

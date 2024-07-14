@@ -169,3 +169,10 @@ def search(request):
       searched_products = all_products.filter(Q(name__icontains=product_name))
       data['products']=searched_products
       return render(request, 'user/home.html', context=data)
+   
+def delete_cart(request, cart_id):
+
+   delete_cart_product = Cart.objects.get(id=cart_id)
+   delete_cart_product.delete()
+   # return render(request, 'user/cart.html', context=data)
+   return redirect("/cart")
