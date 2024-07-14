@@ -7,9 +7,14 @@ from user.models import Cart
 from django.db.models import Q
 from django.contrib import messages
 # Create your views here.
+
+products = Product.objects.none()
 def home(request):
    data={}
+   global products
+   global filtered_products
    products = Product.objects.all()
+   filtered_products = products
    user_specific_products= Cart.objects.filter(uid=request.user.id)
    data['cart_items']=user_specific_products.count()
    data['products'] = products
@@ -96,3 +101,71 @@ def add_to_cart(request, product_id):
          return redirect("/")
    else:
       return redirect("/login")
+   
+
+def cart_items_count(request): 
+   user_specific_products=Cart.objects.filter(uid=request.user.id)
+   print(user_specific_products.count()) 
+   user_specific_cart_count=user_specific_products.count() 
+   return user_specific_cart_count
+
+def cart(request):
+   data={}
+   total_items=0
+   total_price=0 
+   cart_items=Cart.objects.filter(uid=request.user.id) 
+   data['products'] = cart_items 
+   data['cart_items']=cart_items_count(request) 
+   #getting cart items based on quantity 
+   for item in cart_items: 
+      total_items+=item.quantity 
+      total_price+=(item.quantity*item.pid.price) 
+   data['total_items' ]=total_items 
+   data['total_price']=total_price 
+   return render(request, 'user/cart.html',context=data)
+
+
+def update_cart_quantity(request, flag, cart_id):
+   cart_items = Cart.objects.filter(id=cart_id)
+   actual_quantity = cart_items[0].quantity
+   print("")
+   if(flag=="inc"):
+      cart_items.update(quantity=actual_quantity+1)
+   else:
+      if(actual_quantity==1):
+         pass
+      else:
+         cart_items.update(quantity=actual_quantity-1)
+   return redirect("/cart")
+
+
+# sort by category 
+# products = Product.objects.none()
+
+def filter_by_category(request, category_value):
+   data={}
+   global products
+   global filtered_products
+   filtered_products = products.filter(category=category_value)
+   data['products'] = filtered_products
+   return render(request, "user/home.html", context=data)
+
+def sort_by_price(request, flag):
+   global filtered_products
+   data={}
+   if(flag=='asc'):
+      sorted_products = filtered_products.order_by("price")
+   else:
+      sorted_products = filtered_products.order_by("-price")
+   data['products'] = sorted_products
+   return render(request, 'user/home.html', context=data)
+
+def search(request):
+   data={}
+   if(request.method=="POST"):
+      product_name = request.POST.get('product_name')
+      print(product_name)
+      all_products = Product.objects.all()
+      searched_products = all_products.filter(Q(name__icontains=product_name))
+      data['products']=searched_products
+      return render(request, 'user/home.html', context=data)
