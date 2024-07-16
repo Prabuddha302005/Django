@@ -12,4 +12,5 @@ urlpatterns = [
     path('sort/<flag>', views.sort_by_price),
     path('search/', views.search),
     path('delete/<cart_id>', views.delete_cart),
+    path('order-summary/', views.order_summary)
 ]

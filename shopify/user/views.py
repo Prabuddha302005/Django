@@ -176,3 +176,23 @@ def delete_cart(request, cart_id):
    delete_cart_product.delete()
    # return render(request, 'user/cart.html', context=data)
    return redirect("/cart")
+
+import razorpay
+def order_summary(request):
+   data1={}
+   total_items=0
+   total_price=0 
+   cart_items=Cart.objects.filter(uid=request.user.id) 
+   data1['products'] = cart_items 
+   data1['cart_items']=cart_items_count(request) 
+   #getting cart items based on quantity 
+   for item in cart_items: 
+      total_items+=item.quantity 
+      total_price+=(item.quantity*item.pid.price) 
+   data1['total_items' ]=total_items 
+   data1['total_price']=total_price 
+
+   client = razorpay.Client(auth=("rzp_test_XRjX6qJ69ajxxs", "s56837vKNGmoW2BiQkQbC3sH"))
+   data = { "amount": total_price*100, "currency": "INR", "receipt": "order_rcptid_11" }
+   payment = client.order.create(data=data)
+   return render(request, "user/order_summary.html", context=data1)
