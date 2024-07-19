@@ -56,3 +56,35 @@ def user_login(request):
 
 def home(request):
    return render(request, "myapp/home.html")
+
+# Update username 
+def update_user_details(request):
+   if(request.user.is_authenticated):
+      if(request.method=="POST"):
+         update_username = request.POST['username']
+         print(update_username)
+
+         user = User.objects.get(id=request.user.id)
+         user.username = update_username
+         user.save()
+         return HttpResponse("Username Updated please check your database")
+   else:
+      return redirect("/myapp/login")
+   return render(request, "myapp/update_details.html")
+
+# update password 
+def update_user_password(request):
+   if(request.user.is_authenticated):
+      if(request.method=="POST"):
+         update_password = request.POST['password']
+         print(update_password)
+
+         user = User.objects.get(username=request.user.username)
+         user.password = update_password
+         user.set_password(update_password)
+         user.save()
+         
+         return HttpResponse("Password Updated please check your database")
+   else:
+      return redirect("/myapp/login")
+   return render(request, "myapp/update_pass.html")
