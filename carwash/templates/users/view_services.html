@@ -1,0 +1,93 @@
+{% extends "users/navbar.html" %}
+{% block title %}Book Services{% endblock title %}
+
+{% block styles %}
+<style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+    .product-container {
+      margin-top: 30px;
+    }
+    .product-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      margin-bottom: 20px;
+      padding: 15px;
+    }
+    .product-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .product-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333333;
+      margin: 0;
+    }
+    .product-price {
+      font-size: 1rem;
+      color: #e74c3c;
+    }
+    .book-now-btn {
+      background-color: #28a745;
+      color: #ffffff;
+      border-radius: 50px;
+      padding: 5px 15px;
+    }
+    .book-now-btn:hover {
+      background-color: #218838;
+    }
+    @media (max-width: 768px) {
+      .product-row {
+        flex-direction: column;
+        text-align: center;
+      }
+      .product-details,
+      .product-actions {
+        margin-top: 10px;
+      }
+    }
+  </style>
+{% endblock styles %}
+{% block body %}
+
+
+  <div class="container product-container">
+    <div class="row">
+      <div class="col-12">
+        {% for service  in services %}
+        <div class="product-row">
+          <div class="d-flex align-items-center">
+            {% if service.name == "Full wash" %}
+            <img src="https://blog.way.com/wp-content/uploads/2021/01/part-car-wash-detailing-station-2.jpg" alt="Product Image" class="product-image me-3">
+            
+            {% elif service.name == "wheel Replacment" %}
+            <img src="https://www.autozone.com/diy/wp-content/uploads/2023/09/removing-tire-of-jacked-up-car-duralst-sand-in-bg-870x580.jpg" alt="Product Image" class="product-image me-3">
+            {% elif service.name == "Interior wash" %}
+            <img src="https://3mcarcarethane.in/images/services/cleaning-car-interior-4.jpg" class="product-image me-3">
+            {% elif service.name == "Engine Cleaning" %}
+            <img src="https://rinzerwash.com/wp-content/uploads/2022/10/man-with-clote-cleaning-motor-rinzerwash-1200x900.webp" class="product-image me-3">
+            {% elif service.name == "Seats Cleaning" %}
+            <img src="https://www.thespruce.com/thmb/UvJ6X689ZeB0Hb8XU3UYJA_aG3I=/2500x1663/filters:no_upscale()/how-to-clean-cloth-car-seats-4693504-schema-fc936522693047eb8b141e56d6bbb63b.jpeg" class="product-image me-3">
+            {% endif %}
+
+            <h2 class="product-title">{{service.name}}</h2>
+          </div>
+          <div class="product-actions text-end">
+            <p class="product-price">&#x20b9 {{service.price}}</p>
+            <a href="/service-book/{{service.id}}"><button class="btn book-now-btn">Book Now</button></a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock body %}

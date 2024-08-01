@@ -1,0 +1,92 @@
+{% extends "serviceProvider/navbar.html" %}
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+<style>
+    .alert {
+        padding: 20px;
+        background-color: #86de1a; /* Green */
+        color: white;
+        margin-bottom: 15px;
+        margin-top: 80px;
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    /* When moving the mouse over the close button */
+    .closebtn:hover {
+        color: black;
+    }
+
+    .fulfilled-btn {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .not-fulfilled-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+</style>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert">
+            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container mt-5">
+    <h3>Your username is {{ user.username }}</h3>
+    
+    <h3 class="mt-5">Booked Carwash Services</h3>
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Booking Date</th>
+                <th>Service Name</th>
+                <th>Car Type</th>
+                <th>Address</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.user.first_name}}</td>
+                <td>{{ booking.user.last_name}}</td>
+                <td>{{ booking.user.email}}</td>
+                <td>{{ booking.booking_date }}</td>
+                <td>{{ booking.service.name }}</td>
+                <td>{{ booking.car_type }}</td>
+                <td>{{ booking.user.address }}</td>
+                <td>{{ booking.date }}</td>
+                <td>
+                    {% if booking.is_fulfilled %}
+                    <button class="btn fulfilled-btn">Fulfilled</button>
+                    {% else %}
+                    <button class="btn not-fulfilled-btn">Not Fulfilled</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock body %}

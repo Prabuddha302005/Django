@@ -1,0 +1,181 @@
+{% extends "users/navbar.html" %}
+{% block title %}Book Services{% endblock title %}
+
+{% block styles %}
+<style>
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+.order-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-bottom: 30px;
+    padding: 20px;
+    transition: transform 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.order-card:hover {
+    transform: translateY(-5px);
+}
+.order-details {
+    display: flex;
+    align-items: center;
+}
+.order-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+.order-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 10px;
+}
+.order-info {
+    font-size: 1rem;
+    color: #666666;
+    margin-bottom: 5px;
+}
+.order-actions {
+    text-align: right;
+}
+.order-price {
+    font-size: 1.5rem;
+    color: #e74c3c;
+    margin-bottom: 15px;
+}
+.pay-now-btn {
+    background-color: #28a745;
+    color: #ffffff;
+    border-radius: 50px;
+    padding: 10px 20px;
+}
+.pay-now-btn:hover {
+    background-color: #218838;
+}
+@media (max-width: 768px) {
+    .order-card {
+      flex-direction: column;
+      text-align: center;
+    }
+    .order-details {
+      margin-bottom: 20px;
+    }
+    .order-actions {
+      text-align: center;
+    }
+}
+</style>
+{% endblock styles %}
+
+{% block body %}
+<div class="container mt-5">
+  <h1>Booking Summary</h1>
+    <div class="row">
+      <div class="col-12">
+        <div class="order-card">
+          <div class="order-details">
+            
+            <img src="" alt="Service Image" class="order-image">
+            <div>
+    
+              <h2 class="order-title"><strong>Service name: </strong>{{ order.name }}</h2>
+              <p class="order-info"><strong>Provider:</strong> {{ details.carwash_name }}</p>
+              <p class="order-info"><strong>Owner:</strong> {{ details.owner_name }}</p>
+              <p class="order-info"><strong>Phone:</strong> {{ details.phone_number }}</p>
+              <p class="order-info"><strong>Address:</strong> {{ details.address }}</p>
+              <hr>
+              <div class="user-details mb-4">
+                
+                <p class="order-info"><strong>User Address:</strong> {{ users.address }}</p>
+                <p class="order-info"><strong>User Phone:</strong> {{ users.phone }}</p>
+            
+                <a href="/update-details/"><button class="btn btn-primary">update details</button></a>
+              </div>
+            </div>
+            
+          </div>
+          <div class="order-actions">
+            <p class="order-price">&#x20b9 {{ order.price }}</p>
+            <form method="POST">
+              {% csrf_token %}
+              <a href="/booking-details/{{order.id}}"> <button id="rzp-button1" type="submit" class="btn pay-now-btn">Pay Now</button></a>
+              <a href="/booking-details/{{order.id}}"> <button type="submit" class="btn pay-now-btn">Pay on delivery</button></a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "rzp_test_XRjX6qJ69ajxxs", // Enter the Key ID generated from the Dashboard
+    "amount": "{{ total_price }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Prabuddha INC",
+    "description": "Ecommerce company",
+    "image": "https://miro.medium.com/v2/resize:fit:2400/1*pR5lQuNikI5gtwHA8OPZkA.jpeg",
+    "order_id": "{{ payment.id }}", // This is the Order ID obtained in the response of Step 1
+    "handler": function (response) {
+        // Update booking status
+        fetch(`/update_booking_status/${response.razorpay_order_id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify({
+                payment_id: response.razorpay_payment_id,
+                order_id: response.razorpay_order_id,
+                signature: response.razorpay_signature
+            })
+        }).then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  alert("Payment Successful!");
+                  window.location.replace("/");
+              } else {
+                  alert("Payment verification failed. Please try again.");
+              }
+          });
+    },
+    "prefill": {
+        "name": "{{ request.user.username }}",
+        "email": "{{ request.user.email }}",
+        "contact": "{{ request.user.profile.phone_number }}"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response) {
+    alert(response.error.code);
+    alert(response.error.description);
+    alert(response.error.source);
+    alert(response.error.step);
+    alert(response.error.reason);
+    alert(response.error.metadata.order_id);
+    alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function (e) {
+    rzp1.open();
+    e.preventDefault();
+  
+
+}
+</script>
+{% endblock body %} 
